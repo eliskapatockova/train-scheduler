@@ -10,6 +10,9 @@ $(document).ready(function(){
         measurementId: "G-PP069CSVXN"
     }
 
+
+    var mykey = firebaseConfig.apiKey;
+
     firebase.initializeApp(firebaseConfig);
 
     var database = firebase.database();
