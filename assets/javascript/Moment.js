@@ -1,14 +1,16 @@
 $(document).ready(function(){
-    var config = {
-        apiKey: "AIzaSyAgw-74UmVA8bRHLUsuinrbLCT98LhFhW0",
-        authDomain: "train-scheduler-c4c45.firebaseapp.com",
-        databaseURL: "https://train-scheduler-c4c45.firebaseio.com",
-        projectId: "train-scheduler-c4c45",
-        storageBucket: "train-scheduler-c4c45.appspot.com",
-        messagingSenderId: "493563491239"
+    var firebaseConfig = {
+        apiKey: "AIzaSyBQvXsTu9rSFN9H3UANM6nQ_9BVcFnRxUY",
+        authDomain: "train-scheduler-ac2c8.firebaseapp.com",
+        databaseURL: "https://train-scheduler-ac2c8.firebaseio.com",
+        projectId: "train-scheduler-ac2c8",
+        storageBucket: "train-scheduler-ac2c8.appspot.com",
+        messagingSenderId: "432526871285",
+        appId: "1:432526871285:web:9e4752af0596c7449113bc",
+        measurementId: "G-PP069CSVXN"
     }
 
-    firebase.initializeApp(config);
+    firebase.initializeApp(firebaseConfig);
 
     var database = firebase.database();
 
@@ -37,21 +39,21 @@ $(document).ready(function(){
 
     })
 
-    database.ref().on("child_added", function(newChild) {
+    database.ref().on("child_added", function(snapshot) {
         var nextTrain;
         var minAway;
 
-        var firstTrainNew = moment(newChild.val().firstTrain, "hh:mm").subtract(1, "years");
+        var firstTrainNew = moment(snapshot.val().firstTrain, "hh:mm").subtract(1, "years");
         var differenceInTime = moment().diff(moment(firstTrainNew), "minutes");
-        var remainder = differenceInTime % newChild.val().frequency;
+        var remainder = differenceInTime % snapshot.val().frequency;
 
-        minAway = newChild.val().frequency - remainder;
+        minAway = snapshot.val().frequency - remainder;
         nextTrain = moment().add(minAway, "minutes");
         nextTrain = moment(nextTrain).format("hh:mm");
 
-        $("#add-row").append("<tr><td>" + newChild.val().name + 
-                            "</td><td>" + newChild.val().destination +
-                            "</td><td>" + newChild.val().frequency +
+        $("#add-row").append("<tr><td>" + snapshot.val().name + 
+                            "</td><td>" + snapshot.val().destination +
+                            "</td><td>" + snapshot.val().frequency +
                             "</td><td>" + nextTrain +
                             "</td><td>" + minAway + "</td></tr>");
 
